@@ -1,13 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
+import styled from "@emotion/styled";
+
+import { FirebaseContext } from "../../firebase";
+
+const Nav = styled.nav`
+  padding-left: 2rem;
+
+  a {
+    font-size: 1.8rem;
+    margin-left: 2rem;
+    color: var(--gris2);
+    font-family: "PT Sans", sans-serif;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+`;
 
 const Navegacion = () => {
+  const { user } = useContext(FirebaseContext);
+
   return (
-    <nav>
+    <Nav>
       <Link href="/">Inicio</Link>
-      <Link href="/">Populares</Link>
-      <Link href="/">Nuevo Producto</Link>
-    </nav>
+      <Link href="/populares">Populares</Link>
+      {user && <Link href="/nuevo-producto">Nuevo Producto</Link>}
+    </Nav>
   );
 };
 
