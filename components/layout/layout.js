@@ -26,7 +26,7 @@ const Layout = props => {
           body {
             font-size: 1.6rem;
             line-height: 1.5;
-            font-family: 'PT Sans', sans-serif;
+            font-family: "PT Sans", sans-serif;
           }
           h1,
           h2,
@@ -36,11 +36,11 @@ const Layout = props => {
           }
           h1,
           h2 {
-            font-family: 'Roboto Slab', serif;
+            font-family: "Roboto Slab", serif;
             font-weight: 700;
           }
           h3 {
-            font-family: 'PT Sans', sans-serif;
+            font-family: "PT Sans", sans-serif;
           }
           ul {
             list-style: none;
@@ -49,6 +49,9 @@ const Layout = props => {
           }
           a {
             text-decoration: none;
+          }
+          img {
+            max-width: 100%;
           }
         `}
       />
