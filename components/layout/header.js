@@ -6,7 +6,7 @@ import { css } from "@emotion/core";
 import Buscar from "../ui/Buscar";
 import Navegacion from "./Navegacion";
 import Boton from "../ui/Boton";
-import { FirebaseContext } from "../../firebase";
+import { FirebaseContext } from "../../firebase_helpers";
 
 const ContendedorHeader = styled.div`
   max-width: 1220px;

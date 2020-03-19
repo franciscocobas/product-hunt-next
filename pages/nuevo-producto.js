@@ -12,7 +12,7 @@ import {
   Error
 } from "../components/ui/Formulario";
 
-import { FirebaseContext } from "../firebase";
+import { FirebaseContext } from "../firebase_helpers";
 
 // Validaciones
 import useValidacion from "../hooks/useValidacion";

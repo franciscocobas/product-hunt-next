@@ -1,15 +1,15 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useRouter } from "next/router";
-import Error404 from "../../components/layout/404";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import { es } from "date-fns/locale";
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
-import { Campo, InputSubmit } from "../../components/ui/Formulario";
-import Layout from "../../components/layout/layout";
-import Boton from "../../components/ui/Boton";
+import React, { useEffect, useContext, useState } from 'react';
+import { useRouter } from 'next/router';
+import Error404 from '../../components/layout/404';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import { es } from 'date-fns/locale';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import { Campo, InputSubmit } from '../../components/ui/Formulario';
+import Layout from '../../components/layout/layout';
+import Boton from '../../components/ui/Boton';
 
-import { FirebaseContext } from "../../firebase";
+import { FirebaseContext } from '../../firebase_helpers';
 
 const ContenedorProducto = styled.div`
   @media (min-width: 768px) {
@@ -30,7 +30,7 @@ const CreadorProducto = styled.p`
 `;
 
 const Producto = () => {
-  const [producto, setProducto] = useState("");
+  const [producto, setProducto] = useState('');
   const [error, setError] = useState(false);
   const [comentario, setComentario] = useState({});
   const [consultarDB, setConsultarDB] = useState(true);
@@ -46,7 +46,7 @@ const Producto = () => {
   useEffect(() => {
     if (id && consultarDB) {
       const obtenerProducto = async () => {
-        const productoQuery = await firebase.db.collection("productos").doc(id);
+        const productoQuery = await firebase.db.collection('productos').doc(id);
         const producto = await productoQuery.get();
         if (producto.exists) {
           setProducto(producto.data());
@@ -60,7 +60,7 @@ const Producto = () => {
     }
   }, [id]);
 
-  if (Object.keys(producto).length === 0 && !error) return "Cargando...";
+  if (Object.keys(producto).length === 0 && !error) return 'Cargando...';
 
   const {
     comentarios,
@@ -78,14 +78,14 @@ const Producto = () => {
   // Administrar y validar los votos
   const votarProducto = () => {
     if (!user) {
-      return router.push("/login");
+      return router.push('/login');
     }
     // Obtener y sumar un nuevo voto
     const nuevoTotal = votos + 1;
 
     // Actualizar en la BD
     firebase.db
-      .collection("productos")
+      .collection('productos')
       .doc(id)
       .update({
         votos: nuevoTotal
@@ -125,7 +125,7 @@ const Producto = () => {
     e.preventDefault();
 
     if (!user) {
-      return router.push("/login");
+      return router.push('/login');
     }
 
     // Informacion extra al comentario
@@ -137,7 +137,7 @@ const Producto = () => {
 
     // Actualizar BD
     firebase.db
-      .collection("productos")
+      .collection('productos')
       .doc(id)
       .update({
         comentarios: nuevosComentarios
@@ -149,6 +149,33 @@ const Producto = () => {
       comentarios: nuevosComentarios
     });
     setConsultarDB(true);
+  };
+
+  const puedeBorrar = () => {
+    if (!user) return false;
+
+    if (creador.id === user.uid) {
+      return true;
+    }
+  };
+
+  // Elimina un producto en la BD
+  const eliminarProducto = async () => {
+    if (!user) {
+      return router.push('/login');
+    }
+    if (creador.id !== user.uid) {
+      return router.push('/');
+    }
+    try {
+      await firebase.db
+        .collection('productos')
+        .doc(id)
+        .delete();
+      router.push('/');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -169,7 +196,7 @@ const Producto = () => {
             <ContenedorProducto>
               <div>
                 <p>
-                  Publicado hace:{" "}
+                  Publicado hace:{' '}
                   {formatDistanceToNow(new Date(creado), { locale: es })}
                 </p>
                 <p>
@@ -201,7 +228,7 @@ const Producto = () => {
                   Comentarios
                 </h2>
                 {comentarios.length === 0 ? (
-                  "Aún no hay comentarios. "
+                  'Aún no hay comentarios. '
                 ) : (
                   <ul>
                     {comentarios.map((comentario, i) => (
@@ -214,13 +241,13 @@ const Producto = () => {
                       >
                         <p>{comentario.mensaje}</p>
                         <p>
-                          Escrito por:{" "}
+                          Escrito por:{' '}
                           <span
                             css={css`
                               font-weight: bold;
                             `}
                           >
-                            {""}
+                            {''}
                             {comentario.usuarioNombre}
                           </span>
                         </p>
@@ -253,6 +280,10 @@ const Producto = () => {
                 </div>
               </aside>
             </ContenedorProducto>
+
+            {puedeBorrar() && (
+              <Boton onClick={eliminarProducto}>Eliminar Producto</Boton>
+            )}
           </div>
         )}
       </>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import Layout from "../components/layout/layout";
-import { FirebaseContext } from "../firebase";
+import { FirebaseContext } from "../firebase_helpers";
 import DetallesProducto from "../components/layout/DetallesProducto";
 
 const Home = () => {

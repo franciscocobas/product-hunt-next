@@ -10,7 +10,7 @@ import {
   Error
 } from "../components/ui/Formulario";
 
-import firebase from "../firebase";
+import firebase from "../firebase_helpers";
 
 // Validaciones
 import useValidacion from "../hooks/useValidacion";
