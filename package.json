@@ -16,7 +16,7 @@
     "date-fns": "^2.11.0",
     "firebase": "^7.11.0",
     "firebase-admin": "^8.10.0",
-    "next": "9.3.0",
+    "next": "9.3.2",
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-firebase-file-uploader": "^2.4.3"
